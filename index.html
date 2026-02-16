@@ -214,14 +214,9 @@
         }
 
         function handleNoClick() {
-            if (noClickCount >= config.noMessages.length) {
-                // Reiniciar el ciclo
-                noClickCount = 0;
-                resetInterface();
-                return;
-            }
-
-            const currentConfig = config.noMessages[noClickCount];
+            // Usar el último mensaje si se agotan, pero seguir incrementando el contador
+            const indexForMessage = Math.min(noClickCount, config.noMessages.length - 1);
+            const currentConfig = config.noMessages[indexForMessage];
             noClickCount++;
 
             // Actualizar texto del botón "No"
@@ -231,7 +226,7 @@
             currentImage.src = currentConfig.image;
             currentImage.alt = 'Osito triste';
 
-            // Aumentar tamaño del botón "Sí" progresivamente
+            // Aumentar tamaño del botón "Sí" progresivamente (sin límite)
             const baseFontSize = 16;
             const basepadding = 12;
             const newFontSize = baseFontSize + (noClickCount * 20);
