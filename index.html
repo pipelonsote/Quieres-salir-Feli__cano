@@ -53,6 +53,8 @@
             justify-content: center;
             flex-wrap: wrap;
             margin-top: 30px;
+            position: relative;
+            min-height: 60px;
         }
 
         button {
@@ -68,6 +70,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        #siBtn.mounted {
+            position: absolute;
+            z-index: 10;
         }
 
         button:focus {
@@ -234,6 +241,20 @@
             
             siBtn.style.fontSize = `${newFontSize}px`;
             siBtn.style.padding = `${newPadding}px ${newPadding * 2}px`;
+
+            // Después de 10 clics, montar el botón "Sí" encima del "No"
+            if (noClickCount >= 10) {
+                siBtn.classList.add('mounted');
+                // Posicionar el botón "Sí" sobre el "No"
+                const noBtnRect = noBtn.getBoundingClientRect();
+                const containerRect = buttonsContainer.getBoundingClientRect();
+                
+                const topPosition = noBtnRect.top - containerRect.top;
+                const leftPosition = noBtnRect.left - containerRect.left;
+                
+                siBtn.style.top = `${topPosition}px`;
+                siBtn.style.left = `${leftPosition}px`;
+            }
 
             // Accesibilidad: anunciar cambios
             noBtn.setAttribute('aria-label', `Responder no. ${currentConfig.text}`);
